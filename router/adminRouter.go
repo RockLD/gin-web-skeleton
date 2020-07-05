@@ -13,6 +13,7 @@ func LoadAdminRouter(g *gin.Engine) {
 	r.Use(middleware.AdminAuth())
 	{
 		r.GET("/login", controller.Login)
+		r.POST("/login", controller.Login)
 		r.GET("/index", controller.Index)
 		r.POST("/index", controller.Index)
 		r.GET("/welcome", controller.Welcome)
