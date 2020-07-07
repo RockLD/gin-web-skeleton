@@ -21,12 +21,13 @@ func Login(c *gin.Context) {
 	if "POST" == c.Request.Method {
 		var loginField LoginField
 		if err := c.BindJSON(&loginField); err != nil {
-			var respData RespData
-			respData.Username = loginField.Username
-			respData.Password = loginField.Password
-			util.SendResponse(c, nil, respData)
+			util.SendResponse(c, err, nil)
 			c.Abort()
 		}
+		var respData RespData
+		respData.Username = loginField.Username
+		respData.Password = loginField.Password
+		util.SendResponse(c, nil, respData)
 	}
 	csrfToken := csrf.GetToken(c)
 	c.HTML(http.StatusOK, "login/login.html", gin.H{"csrfToken": csrfToken})

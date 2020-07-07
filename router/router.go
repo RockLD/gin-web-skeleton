@@ -3,9 +3,6 @@ package router
 import (
 	"fmt"
 	"gin-web-skeleton/app/index/api"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
-	csrf "github.com/utrack/gin-csrf"
 	"net/http"
 	"time"
 
@@ -13,15 +10,6 @@ import (
 )
 
 func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
-	store := cookie.NewStore([]byte("secret"))
-	g.Use(sessions.Sessions("mysession", store))
-	g.Use(csrf.Middleware(csrf.Options{
-		Secret: "secret123",
-		ErrorFunc: func(c *gin.Context) {
-			c.String(401, "CSRF token mismatch")
-			c.Abort()
-		},
-	}))
 
 	g.Static("/static", "./public/static")
 	// 格式化日志输出格式

@@ -10,7 +10,7 @@ import (
 func LoadAdminRouter(g *gin.Engine) {
 	g.LoadHTMLGlob("app/admin/templates/**/*")
 	r := g.Group("/admin")
-	r.Use(middleware.AdminAuth())
+	r.Use(middleware.AdminAuth(g))
 	{
 		r.GET("/login", controller.Login)
 		r.POST("/login", controller.Login)
