@@ -25,7 +25,7 @@
     <div id="darkbannerwrap"></div>
 
     <form method="post" class="layui-form" >
-        <input name="csrfToken" placeholder="用户名" class="csrfToken" type="hidden" value="{{ .csrfToken }}" >
+        <input name="token" placeholder="用户名" class="token" type="hidden" value="" >
         <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input username" >
         <hr class="hr15">
         <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input password">
@@ -47,8 +47,8 @@
                 // alert(888)
                 var username = $(".username").val().trim();
                 var password = $(".password").val().trim();
-                var csrfToken = $(".csrfToken").val();
-                $.post("/admin/login",{"username":username,"password":password,"_csrf":csrfToken},function (res) {
+                var csrfToken = $(".token").val();
+                $.post("/admin/login",{"username":username,"password":password,"csrf":csrfToken},function (res) {
                     if (res.code === 0) {
                         layer.msg("登陆成功",function () {
                             location.href = "/admin/index";

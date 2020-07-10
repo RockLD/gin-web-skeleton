@@ -3,7 +3,6 @@ package controller
 import (
 	"gin-web-skeleton/util"
 	"github.com/gin-gonic/gin"
-	csrf "github.com/utrack/gin-csrf"
 	"net/http"
 )
 
@@ -20,7 +19,7 @@ type RespData struct {
 func Login(c *gin.Context) {
 	if "POST" == c.Request.Method {
 		var loginField LoginField
-		if err := c.BindJSON(&loginField); err != nil {
+		if err := c.Bind(&loginField); err != nil {
 			util.SendResponse(c, err, nil)
 			c.Abort()
 		}
@@ -29,6 +28,6 @@ func Login(c *gin.Context) {
 		respData.Password = loginField.Password
 		util.SendResponse(c, nil, respData)
 	}
-	csrfToken := csrf.GetToken(c)
-	c.HTML(http.StatusOK, "login/login.html", gin.H{"csrfToken": csrfToken})
+	//token := csrf.GetToken(c)
+	c.HTML(http.StatusOK, "login/login.html", nil)
 }

@@ -2,7 +2,9 @@ package router
 
 import (
 	"fmt"
+	"gin-web-skeleton/app/admin/controller"
 	"gin-web-skeleton/app/index/api"
+	"gin-web-skeleton/middleware"
 	"net/http"
 	"time"
 
@@ -43,6 +45,18 @@ func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 	g.GET("/", api.Hello)
 
 	// 管理后台路由
-	LoadAdminRouter(g)
+	//LoadAdminRouter(g)
+
+	r := g.Group("/admin", middleware.AdminAuth())
+	{
+		g.LoadHTMLGlob("app/admin/templates/**/*")
+
+		r.GET("/login", controller.Login)
+		r.POST("/login", controller.Login)
+		r.GET("/index", controller.Index)
+		r.POST("/index", controller.Index)
+		r.GET("/welcome", controller.Welcome)
+	}
+
 	return g
 }
