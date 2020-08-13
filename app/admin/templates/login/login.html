@@ -38,16 +38,16 @@
 <script>
     $(function  () {
         layui.use('form', function(){
-            var form = layui.form;
+            let form = layui.form;
             // layer.msg('玩命卖萌中', function(){
             //   //关闭后的操作
             //   });
             //监听提交
             form.on('submit(login)', function(data){
                 // alert(888)
-                var username = $(".username").val().trim();
-                var password = $(".password").val().trim();
-                var csrfToken = $(".token").val();
+                let username = $(".username").val().trim();
+                let password = $(".password").val().trim();
+                let csrfToken = $(".token").val();
                 $.post("/admin/login",{"username":username,"password":password,"csrf":csrfToken},function (res) {
                     if (res.code === 0) {
                         layer.msg("登陆成功",function () {
