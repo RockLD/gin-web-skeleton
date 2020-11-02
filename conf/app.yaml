@@ -1,5 +1,10 @@
 appname: GIN-WEB-SKELETON
 runmode: dev
 addr: :8090
-jwt_secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
-database: !include database.yaml
+jwt_secret: myjwtsecret
+db:
+  username: root
+  password: 123456
+  addr: 127.0.0.1
+  port: 3306
+  name: gin-web-skeleton

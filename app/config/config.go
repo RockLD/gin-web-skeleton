@@ -26,8 +26,11 @@ func (c *Config) initConfig() error {
 	if c.Name != "" {
 		viper.SetConfigFile(c.Name)
 	} else {
-		viper.AddConfigPath("../../conf")
+		viper.AddConfigPath("conf")
+
+		// TODO 需要改成循环setConfigName
 		viper.SetConfigName("app")
+		//viper.SetConfigName("db")
 	}
 
 	viper.SetConfigType("yaml")

@@ -3,17 +3,27 @@ package main
 import (
 	"errors"
 	"fmt"
+	"gin-web-skeleton/app/config"
+	"gin-web-skeleton/middleware"
+	"gin-web-skeleton/model"
 	"gin-web-skeleton/router"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"net/http"
 	"time"
 )
 
+var cfg = pflag.StringP("config", "c", "", "path")
+
 func main() {
 	g := gin.New()
 
-	router.InitRouter(g)
+	if err := config.Init(*cfg); err != nil {
+		panic(err)
+	}
+
+	router.InitRouter(g, middleware.Cors())
 
 	go func() {
 		if err := pingServer(); err != nil {
@@ -21,7 +31,12 @@ func main() {
 		}
 	}()
 
-	fmt.Println(viper.GetString("addr"))
+	model.DB.Init()
+	defer model.DB.Close()
+
+	fmt.Println(viper.GetString("jwt_secret"))
+
+	fmt.Println(viper.Get("db"))
 	g.Run(":8090")
 }
 

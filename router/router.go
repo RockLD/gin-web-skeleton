@@ -13,7 +13,6 @@ import (
 
 func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 
-	g.Static("/static", "./public/static")
 	// 格式化日志输出格式
 	g.Use(gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
 		return fmt.Sprintf(
@@ -49,12 +48,11 @@ func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 
 	r := g.Group("/admin", middleware.AdminAuth())
 	{
-		g.LoadHTMLGlob("app/admin/templates/**/*")
-
-		r.GET("/login", controller.Login)
 		r.POST("/login", controller.Login)
-		r.GET("/index", controller.Index)
-		r.POST("/index", controller.Index)
+		admins := r.Group("/admins/")
+		{
+			admins.GET("list", controller.AdminsList)
+		}
 		r.GET("/welcome", controller.Welcome)
 	}
 
