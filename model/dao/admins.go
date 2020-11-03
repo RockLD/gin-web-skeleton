@@ -5,6 +5,7 @@ import (
 )
 
 type Admins struct {
+	model.BaseModel
 	ID       int64  `gorm:"primary_key;column:id;type:bigint(20);not null"`
 	Username string `gorm:"column:username;type:varchar(20);not null"`  // 用户名
 	Password string `gorm:"column:password;type:varchar(128);not null"` // 密码
@@ -20,5 +21,7 @@ func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
 }
 
 func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]Admins, error) {
-
+	admins := []Admins{}
+	model.DB.Self.Offset(page - 1).Limit(limit).Find(&admins)
+	return admins, nil
 }

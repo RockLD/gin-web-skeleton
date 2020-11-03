@@ -62,7 +62,7 @@
       
       <table id="LAY-user-back-manage" lay-filter="LAY-user-back-manage"></table>  
       <script type="text/html" id="buttonTpl">
-        {{#  if(d.check == true){ }}
+        {{#  if(d.status == 1){ }}
           <button class="layui-btn layui-btn-xs">已审核</button>
         {{#  } else { }}
           <button class="layui-btn layui-btn-primary layui-btn-xs">未审核</button>
