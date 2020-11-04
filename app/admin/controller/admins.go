@@ -14,6 +14,7 @@ type Admins struct {
 	Email     string    `json:"email"`
 	Status    int       `json:"status"`
 	RealName  string    `json:"real_name"`
+	Mobile    string    `json:"mobile"`
 	CreatedAt time.Time `json:"created_at"`
 	RoleName  string    `json:"role_name"`
 }
@@ -36,7 +37,11 @@ func AdminsList(c *gin.Context) {
 	var admins []Admins
 	if len(list) != 0 {
 		for _, vo := range list {
-			admins = append(admins, Admins{ID: vo.ID, Username: vo.Username, Email: vo.Email, Status: vo.Status, RealName: vo.RealName, CreatedAt: vo.CreatedAt})
+			admins = append(admins, Admins{
+				ID:       vo.ID,
+				Username: vo.Username,
+				Email:    vo.Email,
+				Status:   vo.Status, RealName: vo.RealName, CreatedAt: vo.CreatedAt, Mobile: vo.Mobile})
 		}
 	}
 

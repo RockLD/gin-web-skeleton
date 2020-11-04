@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"fmt"
 	"gin-web-skeleton/model"
 )
 
@@ -13,6 +14,8 @@ type Admins struct {
 	Status   int    `gorm:"column:status;type:int(10);not null"`        // 状态
 	RealName string `gorm:"column:realname;type:varchar(255);not null"` // 真实姓名
 	RoleId   string `gorm:"column:role_id;type:int(10);not null"`       // 角色ID
+	Mobile   string `gorm:"column:mobile;type:varchar(32);not null"`    // 手机
+	Roles    Roles
 }
 
 func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
@@ -22,6 +25,7 @@ func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
 
 func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]Admins, error) {
 	admins := []Admins{}
-	model.DB.Self.Offset(page - 1).Limit(limit).Find(&admins)
+	model.DB.Self.Offset(page - 1).Limit(limit).Order("id desc").Find(&admins)
+	fmt.Println(admins)
 	return admins, nil
 }

@@ -85,7 +85,8 @@ layui.define(['table', 'form','common'], function(exports){
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 80, title: 'ID', sort: true}
       ,{field: 'username', title: '登录名'}
-      ,{field: 'telphone', title: '手机'}
+      ,{field: 'mobile', title: '手机'}
+      ,{field: 'real_name', title: '真实姓名'}
       ,{field: 'email', title: '邮箱'}
       ,{field: 'role', title: '角色'}
       ,{field: 'created_at', title: '加入时间', sort: true}
