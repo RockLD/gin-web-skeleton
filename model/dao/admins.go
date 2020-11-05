@@ -18,14 +18,24 @@ type Admins struct {
 	Roles    Roles
 }
 
+func (admins Admins) TableName() string {
+	return "gws_admins"
+}
+
+type AdminList struct {
+	Admins
+	RoleName string `json:"role_name"`
+}
+
 func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
 	d := model.DB.Self.Where("username=?", username).First(&admin)
 	return admin, d.Error
 }
 
-func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]Admins, error) {
-	admins := []Admins{}
-	model.DB.Self.Offset(page - 1).Limit(limit).Order("id desc").Find(&admins)
-	fmt.Println(admins)
-	return admins, nil
+func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]AdminList, error) {
+	var list []AdminList
+	err := model.DB.Self.Table(admin.TableName()).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error
+	fmt.Println(err)
+	fmt.Println(list)
+	return list, nil
 }

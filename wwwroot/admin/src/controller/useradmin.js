@@ -88,7 +88,7 @@ layui.define(['table', 'form','common'], function(exports){
       ,{field: 'mobile', title: '手机'}
       ,{field: 'real_name', title: '真实姓名'}
       ,{field: 'email', title: '邮箱'}
-      ,{field: 'role', title: '角色'}
+      ,{field: 'role_name', title: '角色'}
       ,{field: 'created_at', title: '加入时间', sort: true}
       ,{field: 'status', title:'审核状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
       ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}

@@ -41,7 +41,8 @@ func AdminsList(c *gin.Context) {
 				ID:       vo.ID,
 				Username: vo.Username,
 				Email:    vo.Email,
-				Status:   vo.Status, RealName: vo.RealName, CreatedAt: vo.CreatedAt, Mobile: vo.Mobile})
+				Status:   vo.Status,
+				RealName: vo.RealName, CreatedAt: vo.CreatedAt, Mobile: vo.Mobile, RoleName: vo.RoleName})
 		}
 	}
 
