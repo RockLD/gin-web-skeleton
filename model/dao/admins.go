@@ -37,10 +37,10 @@ func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
 /**
  * 获取管理员列表
  */
-func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]AdminInfo, error) {
+func (admin Admins) GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]AdminInfo, error) {
 	var list []AdminInfo
 
-	if err := model.DB.Self.Table(admin.TableName()).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error; err != nil {
+	if err := model.DB.Self.Table(admin.TableName()).Where(where).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error; err != nil {
 		return list, err
 	}
 

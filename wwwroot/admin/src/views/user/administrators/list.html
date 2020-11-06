@@ -17,13 +17,13 @@
         <div class="layui-inline">
           <label class="layui-form-label">登录名</label>
           <div class="layui-input-block">
-            <input type="text" name="loginname" placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text" name="username" placeholder="请输入" autocomplete="off" class="layui-input">
           </div>
         </div>
         <div class="layui-inline">
           <label class="layui-form-label">手机</label>
           <div class="layui-input-block">
-            <input type="text" name="telphone" placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="text" name="mobile" placeholder="请输入" autocomplete="off" class="layui-input">
           </div>
         </div>
         <div class="layui-inline">
@@ -35,14 +35,14 @@
         <div class="layui-inline">
           <label class="layui-form-label">角色</label>
           <div class="layui-input-block">
-            <select name="role">
-              <option value="0">管理员</option>
+            <select name="role_id" id="role_list">
+              <!-- <option value="0">管理员</option>
               <option value="1">超级管理员</option>
               <option value="2">纠错员</option>
               <option value="3">采购员</option>
               <option value="4">推销员</option>
               <option value="5">运营人员</option>
-              <option value="6">编辑</option>
+              <option value="6">编辑</option> -->
             </select>
           </div>
         </div>
@@ -87,13 +87,37 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
   ,view = layui.view
   ,table = layui.table
   ,form = layui.form;
+
+  // 获取role_list
+  admin.req({
+    url: layui.setter.localUrl + "/admin/roles/all",
+    method:"GET",
+    dataType:"json",
+    done:function(res){
+      if (res.code == 0) {
+          $("#role_list").append(new Option("请选择",0));
+          $.each(res.data,function(index, item){
+              var option;
+              option = new Option(item.role_name,item.id);
+              $("#role_list").append(option);
+          });
+
+          form.render('select');
+      } else {
+        console.log(res.msg)
+      }
+    }
+    }
+  );
   
   form.render(null, 'layadmin-useradmin-formlist');
   
   //监听搜索
   form.on('submit(LAY-user-back-search)', function(data){
     var field = data.field;
-    
+    console.log(field);
+    console.log(data.field);
+
     //执行重载
     table.reload('LAY-user-back-manage', {
       where: field

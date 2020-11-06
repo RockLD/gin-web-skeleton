@@ -8,6 +8,6 @@ func GetAdminByUsername(username string) (dao.Admins, error) {
 	return adminDao.GetAdminByUsername(username)
 }
 
-func GetAdminsByWhere(where map[string]string, page, limit int) ([]dao.AdminInfo, error) {
+func GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]dao.AdminInfo, error) {
 	return adminDao.GetAdminsByWhere(where, page, limit)
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -25,7 +26,26 @@ type Resp struct {
 func AdminsList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
-	list, err := services.GetAdminsByWhere(nil, page, limit)
+
+	where := make(map[string]interface{})
+
+	if c.Query("username") != "" {
+		where["username"] = strings.TrimSpace(c.Query("username"))
+	}
+
+	if c.Query("mobile") != "" {
+		where["mobile"] = strings.TrimSpace(c.Query("mobile"))
+	}
+
+	if c.Query("email") != "" {
+		where["email"] = strings.TrimSpace(c.Query("email"))
+	}
+
+	if role_id, _ := strconv.Atoi(c.Query("role_id")); role_id != 0 {
+		where["role_id"] = role_id
+	}
+
+	list, err := services.GetAdminsByWhere(where, page, limit)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,

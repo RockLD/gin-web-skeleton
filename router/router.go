@@ -49,9 +49,15 @@ func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 	r := g.Group("/admin", middleware.AdminAuth())
 	{
 		r.POST("/login", controller.Login)
+		// 管理员
 		admins := r.Group("/admins/")
 		{
 			admins.GET("list", controller.AdminsList)
+		}
+		// 角色
+		roles := r.Group("/roles/")
+		{
+			roles.GET("all", controller.RolesAll)
 		}
 		r.GET("/welcome", controller.Welcome)
 	}
