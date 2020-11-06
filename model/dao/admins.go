@@ -1,7 +1,6 @@
 package dao
 
 import (
-	"fmt"
 	"gin-web-skeleton/model"
 )
 
@@ -22,20 +21,28 @@ func (admins Admins) TableName() string {
 	return "gws_admins"
 }
 
-type AdminList struct {
+type AdminInfo struct {
 	Admins
 	RoleName string `json:"role_name"`
 }
 
 func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
-	d := model.DB.Self.Where("username=?", username).First(&admin)
-	return admin, d.Error
+
+	if err := model.DB.Self.Where("username=?", username).First(&admin).Error; err != nil {
+		return Admins{}, err
+	}
+	return admin, nil
 }
 
-func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]AdminList, error) {
-	var list []AdminList
-	err := model.DB.Self.Table(admin.TableName()).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error
-	fmt.Println(err)
-	fmt.Println(list)
+/**
+ * 获取管理员列表
+ */
+func (admin Admins) GetAdminsByWhere(where map[string]string, page, limit int) ([]AdminInfo, error) {
+	var list []AdminInfo
+
+	if err := model.DB.Self.Table(admin.TableName()).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error; err != nil {
+		return list, err
+	}
+
 	return list, nil
 }
