@@ -26,23 +26,23 @@ type AdminInfo struct {
 	RoleName string `json:"role_name"`
 }
 
-func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
-
-	if err := model.DB.Self.Where("username=?", username).First(&admin).Error; err != nil {
-		return Admins{}, err
-	}
-	return admin, nil
-}
+//func (admin Admins) GetAdminByUsername(username string) (Admins, error) {
+//
+//	if err := model.DB.Self.Where("username=?", username).First(&admin).Error; err != nil {
+//		return Admins{}, err
+//	}
+//	return admin, nil
+//}
 
 /**
  * 获取管理员列表
  */
-func (admin Admins) GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]AdminInfo, error) {
-	var list []AdminInfo
-
-	if err := model.DB.Self.Table(admin.TableName()).Where(where).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error; err != nil {
-		return list, err
-	}
-
-	return list, nil
-}
+//func (admin Admins) GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]AdminInfo, error) {
+//	var list []AdminInfo
+//
+//	if err := model.DB.Self.Table(admin.TableName()).Where(where).Select("gws_admins.*,gws_roles.role_name").Joins("left join gws_roles on gws_roles.id=gws_admins.role_id").Offset(page - 1).Limit(limit).Order("gws_admins.id desc").Find(&list).Error; err != nil {
+//		return list, err
+//	}
+//
+//	return list, nil
+//}
