@@ -23,6 +23,9 @@ type Admins struct {
 type Resp struct {
 }
 
+/**
+ * 获取管理员列表
+ */
 func AdminsList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
@@ -74,4 +77,8 @@ func AdminsList(c *gin.Context) {
 	})
 	c.Abort()
 	return
+}
+
+func AdminsAdd(c *gin.Context) {
+
 }

@@ -53,6 +53,7 @@ func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 		admins := r.Group("/admins/")
 		{
 			admins.GET("list", controller.AdminsList)
+			admins.POST("add-admin", controller.AdminsAdd)
 		}
 		// 角色
 		roles := r.Group("/roles/")
