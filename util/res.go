@@ -18,4 +18,5 @@ func SendResponse(c *gin.Context, err error, data interface{}) {
 		Msg:  msg,
 		Data: data,
 	})
+	c.Abort()
 }

@@ -20,9 +20,6 @@ type Admins struct {
 	RoleName  string    `json:"role_name"`
 }
 
-type Resp struct {
-}
-
 /**
  * 获取管理员列表
  */
@@ -44,17 +41,13 @@ func AdminsList(c *gin.Context) {
 		where["email"] = strings.TrimSpace(c.Query("email"))
 	}
 
-	if role_id, _ := strconv.Atoi(c.Query("role_id")); role_id != 0 {
-		where["role_id"] = role_id
+	if roleId, _ := strconv.Atoi(c.Query("role_id")); roleId != 0 {
+		where["role_id"] = roleId
 	}
 
 	list, err := services.GetAdminsByWhere(where, page, limit)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": -1,
-			"msg":  err,
-		})
-		c.Abort()
+		sendResponse(c, -1, err.Error(), nil)
 		return
 	}
 	var admins []Admins

@@ -3,7 +3,6 @@ package controller
 import (
 	"gin-web-skeleton/model/services"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type Roles struct {
@@ -17,19 +16,12 @@ func RolesAll(c *gin.Context) {
 	var roles []Roles
 
 	if list, err := services.GetAllRoles(1); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": -1,
-			"msg":  "ok",
-		})
+		sendResponse(c, -1, err.Error(), nil)
 	} else {
 		for _, vo := range list {
 			roles = append(roles, Roles{ID: vo.ID, RoleName: vo.RoleName})
 		}
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"msg":  "ok",
-			"data": roles,
-		})
+		sendResponse(c, 0, "ok", roles)
 	}
 
 	c.Abort()

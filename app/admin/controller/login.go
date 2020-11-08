@@ -7,7 +7,6 @@ import (
 	"gin-web-skeleton/model/services"
 	"gin-web-skeleton/util"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type LoginField struct {
@@ -32,13 +31,11 @@ func Login(c *gin.Context) {
 	fmt.Println(loginField)
 	admin, err := services.GetAdminByUsername(loginField.Username)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"code": -1, "msg": err.Error()})
-		c.Abort()
+		sendResponse(c, -1, err.Error(), nil)
 		return
 	}
 	if 1 != admin.Status {
-		c.JSON(http.StatusOK, gin.H{"code": -2, "msg": "账号状态异常"})
-		c.Abort()
+		sendResponse(c, -2, "账号状态异常", nil)
 		return
 	}
 	h := md5.New()
@@ -46,21 +43,19 @@ func Login(c *gin.Context) {
 	md5Password := hex.EncodeToString(h.Sum(nil))
 
 	if admin.Password != md5Password {
-		c.JSON(http.StatusOK, gin.H{"code": -3, "msg": "密码错误"})
-		c.Abort()
+		sendResponse(c, -3, "密码错误", nil)
 		return
 	}
 
 	token, err := util.GenerateToken(admin.Username, admin.Password)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"code": -4, "msg": "token创建失败，请重新登录"})
-		c.Abort()
+		sendResponse(c, -4, "token创建失败，请重新登录", nil)
 		return
 	}
 
 	respData := RespData{Username: admin.Username, Password: admin.Password, AccessToken: token}
 
 	fmt.Println(respData)
-	util.SendResponse(c, nil, respData)
+	sendResponse(c, 0, "success", respData)
 	return
 }
