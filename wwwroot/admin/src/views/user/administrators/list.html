@@ -86,11 +86,12 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
   ,admin = layui.admin
   ,view = layui.view
   ,table = layui.table
+  ,setter = layui.setter
   ,form = layui.form;
 
   // 获取role_list
   admin.req({
-    url: layui.setter.localUrl + "/admin/roles/all",
+    url: setter.localUrl + "/admin/roles/all",
     method:"GET",
     dataType:"json",
     done:function(res){
@@ -169,6 +170,26 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
 
               //提交 Ajax 成功后，关闭当前弹层并重载表格
               //$.ajax({});
+              admin.req({
+                url: setter.localUrl + "/admin/admins/add-admin",
+                method:"POST",
+                dataType:"json",
+                data:field,
+                done:function(res){
+                  if (res.code == 0) {
+                      $("#role_list").append(new Option("请选择",0));
+                      $.each(res.data,function(index, item){
+                          var option;
+                          option = new Option(item.role_name,item.id);
+                          $("#role_list").append(option);
+                      });
+
+                      form.render('select');
+                  } else {
+                    console.log(res.msg)
+                  }
+                }
+              });
               layui.table.reload('LAY-user-back-manage'); //重载表格
               layer.close(index); //执行关闭 
             });

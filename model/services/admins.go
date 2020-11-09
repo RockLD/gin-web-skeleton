@@ -5,6 +5,14 @@ import (
 	"gin-web-skeleton/model/dao"
 )
 
+type Admins struct {
+	Email    string `json:"email"`
+	Mobile   string `json:"mobile"`
+	RoleId   string `json:"role_id"`
+	UserName string `json:"username"`
+	Status   string `json:"status"`
+}
+
 func GetAdminByUsername(username string) (dao.Admins, error) {
 	//return adminDao.GetAdminByUsername(username)
 	var admin dao.Admins
@@ -22,4 +30,9 @@ func GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]dao.Admi
 		return list, err
 	}
 	return list, nil
+}
+
+func (admins *Admins) AddAdmin() *Admins {
+
+	return admins
 }

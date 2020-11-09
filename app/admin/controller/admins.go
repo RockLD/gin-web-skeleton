@@ -73,5 +73,15 @@ func AdminsList(c *gin.Context) {
 }
 
 func AdminsAdd(c *gin.Context) {
+	var admins services.Admins
 
+	admins.UserName = c.PostForm("username")
+	admins.Mobile = c.PostForm("mobile")
+	admins.Email = c.PostForm("email")
+	admins.RoleId = c.PostForm("role_id")
+	admins.Status = c.PostForm("status")
+	res := admins.AddAdmin()
+	c.JSON(http.StatusOK, gin.H{"data": res})
+	c.Abort()
+	return
 }

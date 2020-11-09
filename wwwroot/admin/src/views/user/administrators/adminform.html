@@ -58,28 +58,6 @@
 layui.use(['admin', 'form'], function(){
   var $ = layui.$
   ,form = layui.form;
-
-  // 获取role_list
-  // admin.req({
-  //   url: layui.setter.localUrl + "/admin/roles/all",
-  //   method:"GET",
-  //   dataType:"json",
-  //   done:function(res){
-  //     if (res.code == 0) {
-  //         $("#role_list").append(new Option("请选择",0));
-  //         $.each(res.data,function(index, item){
-  //             var option;
-  //             option = new Option(item.role_name,item.id);
-  //             $("#role_list").append(option);
-  //         });
-
-  //         form.render('select');
-  //     } else {
-  //       console.log(res.msg)
-  //     }
-  //   }
-  //   }
-  // );
   
 });
 </script>
