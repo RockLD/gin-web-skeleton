@@ -54,6 +54,7 @@ func InitRouter(g *gin.Engine, m ...gin.HandlerFunc) *gin.Engine {
 		{
 			admins.GET("list", controller.AdminsList)
 			admins.POST("add-admin", controller.AdminsAdd)
+			admins.POST("edit-admin/:id", controller.AdminsEdit)
 		}
 		// 角色
 		roles := r.Group("/roles/")

@@ -86,7 +86,7 @@ layui.define(['table', 'form','common'], function(exports){
       ,{field: 'id', width: 80, title: 'ID', sort: true}
       ,{field: 'username', title: '登录名'}
       ,{field: 'mobile', title: '手机'}
-      ,{field: 'real_name', title: '真实姓名'}
+      ,{field: 'realname', title: '真实姓名'}
       ,{field: 'email', title: '邮箱'}
       ,{field: 'role_name', title: '角色'}
       ,{field: 'created_at', title: '加入时间', sort: true}
@@ -119,13 +119,34 @@ layui.define(['table', 'form','common'], function(exports){
         ,success: function(layero, index){
           view(this.id).render('user/administrators/adminform', data).done(function(){
             form.render(null, 'layuiadmin-form-admin');
-            
+
             //监听提交
             form.on('submit(LAY-user-back-submit)', function(data){
               var field = data.field; //获取提交的字段
+              var id = field.id;
 
               //提交 Ajax 成功后，关闭当前弹层并重载表格
               //$.ajax({});
+              admin.req({
+                url: setter.localUrl + "/admin/admins/edit-admin/" + id,
+                method:"POST",
+                dataType:"json",
+                data:field,
+                done:function(res){
+                  if (res.code == 0) {
+                      $("#role_list").append(new Option("请选择",0));
+                      $.each(res.data,function(index, item){
+                          var option;
+                          option = new Option(item.role_name,item.id);
+                          $("#role_list").append(option);
+                      });
+
+                      form.render('select');
+                  } else {
+                    console.log(res.msg)
+                  }
+                }
+              });
               layui.table.reload('LAY-user-back-manage'); //重载表格
               layer.close(index); //执行关闭 
             });

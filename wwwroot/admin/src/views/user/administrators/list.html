@@ -36,13 +36,7 @@
           <label class="layui-form-label">角色</label>
           <div class="layui-input-block">
             <select name="role_id" id="role_list">
-              <!-- <option value="0">管理员</option>
-              <option value="1">超级管理员</option>
-              <option value="2">纠错员</option>
-              <option value="3">采购员</option>
-              <option value="4">推销员</option>
-              <option value="5">运营人员</option>
-              <option value="6">编辑</option> -->
+              
             </select>
           </div>
         </div>
@@ -70,7 +64,7 @@
       </script>
       <script type="text/html" id="table-useradmin-admin">
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-        {{#  if(d.role == '超级管理员'){ }}
+        {{# if(d.role_id == 1){ }}
           <a class="layui-btn layui-btn-disabled layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>删除</a>
         {{#  } else { }}
           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
@@ -87,6 +81,7 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
   ,view = layui.view
   ,table = layui.table
   ,setter = layui.setter
+  ,layer = layui.layer
   ,form = layui.form;
 
   // 获取role_list
@@ -177,20 +172,18 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
                 data:field,
                 done:function(res){
                   if (res.code == 0) {
-                      $("#role_list").append(new Option("请选择",0));
-                      $.each(res.data,function(index, item){
-                          var option;
-                          option = new Option(item.role_name,item.id);
-                          $("#role_list").append(option);
-                      });
-
-                      form.render('select');
+                      layer.msg("已成功添加管理员",{
+                        icon:1,
+                        time:2000
+                      }, function(){
+                        layui.table.reload('LAY-user-back-manage'); //重载表格
+                      })
                   } else {
-                    console.log(res.msg)
+                    layer.msg(res.msg,{icon:2});
                   }
                 }
               });
-              layui.table.reload('LAY-user-back-manage'); //重载表格
+              
               layer.close(index); //执行关闭 
             });
           });
