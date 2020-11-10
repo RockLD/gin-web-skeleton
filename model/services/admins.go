@@ -1,8 +1,12 @@
 package services
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"gin-web-skeleton/model"
 	"gin-web-skeleton/model/dao"
+	"github.com/spf13/viper"
 )
 
 type Admins struct {
@@ -11,6 +15,7 @@ type Admins struct {
 	RoleId   string `json:"role_id"`
 	UserName string `json:"username"`
 	Status   string `json:"status"`
+	RealName string `json:"realname"`
 }
 
 func GetAdminByUsername(username string) (dao.Admins, error) {
@@ -33,6 +38,29 @@ func GetAdminsByWhere(where map[string]interface{}, page, limit int) ([]dao.Admi
 }
 
 func (admins *Admins) AddAdmin() *Admins {
+	status := 2
+	if "on" == admins.Status {
+		status = 1
+	}
+
+	password := viper.GetString("default_password")
+
+	h := md5.New()
+	h.Write([]byte(password))
+	password = hex.EncodeToString(h.Sum(nil))
+
+	adminsModel := dao.Admins{
+		Username: admins.UserName,
+		Status:   status,
+		Password: password,
+		Mobile:   admins.Mobile,
+		Email:    admins.Email,
+		RoleId:   admins.RoleId,
+		RealName: admins.RealName,
+	}
+
+	err := model.DB.Self.Table(adminsModel.TableName()).Create(&adminsModel)
+	fmt.Println(err)
 
 	return admins
 }

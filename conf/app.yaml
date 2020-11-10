@@ -2,6 +2,7 @@ appname: GIN-WEB-SKELETON
 runmode: dev
 addr: :8090
 jwt_secret: myjwtsecret
+default_password: 123456
 db:
   username: root
   password: 123456

@@ -80,6 +80,7 @@ func AdminsAdd(c *gin.Context) {
 	admins.Email = c.PostForm("email")
 	admins.RoleId = c.PostForm("role_id")
 	admins.Status = c.PostForm("status")
+	admins.RealName = c.PostForm("realname")
 	res := admins.AddAdmin()
 	c.JSON(http.StatusOK, gin.H{"data": res})
 	c.Abort()
