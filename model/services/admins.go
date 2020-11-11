@@ -64,3 +64,10 @@ func (admins *Admins) AddAdmin() *Admins {
 
 	return admins
 }
+
+func (admins *Admins) EditAdmin(id int) *Admins {
+	var count int
+	model.DB.Self.Table(dao.Admins{}.TableName()).Where("id != ?", id).Where("username=?", admins.UserName).Count(&count)
+	fmt.Println("count=", count)
+
+}

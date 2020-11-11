@@ -90,13 +90,17 @@ func AdminsAdd(c *gin.Context) {
 func AdminsEdit(c *gin.Context) {
 	var admins services.Admins
 
-	admins.UserName = c.PostForm("username")
+	id, err := strconv.Atoi(c.PostForm("id"))
+	if err != nil {
+		sendResponse(c, -1, err.Error(), nil)
+		return
+	}
 	admins.Mobile = c.PostForm("mobile")
 	admins.Email = c.PostForm("email")
 	admins.RoleId = c.PostForm("role_id")
 	admins.Status = c.PostForm("status")
 	admins.RealName = c.PostForm("realname")
-	res := admins.AddAdmin()
+	res := admins.EditAdmin(id)
 	c.JSON(http.StatusOK, gin.H{"data": res})
 	c.Abort()
 	return
