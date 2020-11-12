@@ -3,6 +3,7 @@ package services
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"gin-web-skeleton/model"
 	"gin-web-skeleton/model/dao"
@@ -65,9 +66,32 @@ func (admins *Admins) AddAdmin() *Admins {
 	return admins
 }
 
-func (admins *Admins) EditAdmin(id int) *Admins {
+func (admins *Admins) EditAdmin(id int) (dao.Admins, error) {
 	var count int
-	model.DB.Self.Table(dao.Admins{}.TableName()).Where("id != ?", id).Where("username=?", admins.UserName).Count(&count)
-	fmt.Println("count=", count)
+	var adminsModel dao.Admins
+	model.DB.Self.Table(adminsModel.TableName()).Where("id != ?", id).Where("username=?", admins.UserName).First(&adminsModel).Count(&count)
+	if count > 0 {
+		fmt.Println(count)
+		fmt.Println(adminsModel)
+		return adminsModel, errors.New("该用户名已存在111")
+	}
 
+	status := 2
+	if "on" == admins.Status {
+		status = 1
+	}
+	model.DB.Self.Where("id = ?", id).First(&adminsModel)
+	adminsModel.Username = admins.UserName
+	adminsModel.Status = status
+	adminsModel.Mobile = admins.Mobile
+	adminsModel.RoleId = admins.RoleId
+	adminsModel.RealName = admins.RealName
+
+	err := model.DB.Self.Table(adminsModel.TableName()).Save(&adminsModel)
+
+	if err != nil {
+		return adminsModel, err.Error
+	}
+
+	return adminsModel, nil
 }

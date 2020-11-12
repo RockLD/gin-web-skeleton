@@ -100,8 +100,11 @@ func AdminsEdit(c *gin.Context) {
 	admins.RoleId = c.PostForm("role_id")
 	admins.Status = c.PostForm("status")
 	admins.RealName = c.PostForm("realname")
-	res := admins.EditAdmin(id)
-	c.JSON(http.StatusOK, gin.H{"data": res})
-	c.Abort()
+	res, err := admins.EditAdmin(id)
+	if err != nil {
+		sendResponse(c, -2, err.Error(), nil)
+		return
+	}
+	sendResponse(c, 0, "success", res)
 	return
 }

@@ -134,16 +134,14 @@ layui.define(['table', 'form','common'], function(exports){
                 data:field,
                 done:function(res){
                   if (res.code == 0) {
-                      $("#role_list").append(new Option("请选择",0));
-                      $.each(res.data,function(index, item){
-                          var option;
-                          option = new Option(item.role_name,item.id);
-                          $("#role_list").append(option);
-                      });
-
-                      form.render('select');
+                      layer.msg("已成功编辑管理员",{
+                        icon:1,
+                        time:2000
+                      }, function(){
+                        layui.table.reload('LAY-user-back-manage'); //重载表格
+                      })
                   } else {
-                    console.log(res.msg)
+                    layer.msg(res.msg,{icon:2});
                   }
                 }
               });
