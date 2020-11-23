@@ -111,8 +111,6 @@ layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 't
   //监听搜索
   form.on('submit(LAY-user-back-search)', function(data){
     var field = data.field;
-    console.log(field);
-    console.log(data.field);
 
     //执行重载
     table.reload('LAY-user-back-manage', {

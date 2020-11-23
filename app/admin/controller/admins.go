@@ -95,6 +95,7 @@ func AdminsEdit(c *gin.Context) {
 		sendResponse(c, -1, err.Error(), nil)
 		return
 	}
+	admins.UserName = c.PostForm("username")
 	admins.Mobile = c.PostForm("mobile")
 	admins.Email = c.PostForm("email")
 	admins.RoleId = c.PostForm("role_id")
@@ -106,5 +107,21 @@ func AdminsEdit(c *gin.Context) {
 		return
 	}
 	sendResponse(c, 0, "success", res)
+	return
+}
+
+func AdminsDel(c *gin.Context) {
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		sendResponse(c, -1, err.Error(), nil)
+		return
+	}
+	var admins services.Admins
+	err = admins.DelAdmin(id)
+	if err != nil {
+		sendResponse(c, -2, err.Error(), nil)
+	} else {
+		sendResponse(c, 0, "success", nil)
+	}
 	return
 }

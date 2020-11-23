@@ -86,6 +86,7 @@ func (admins *Admins) EditAdmin(id int) (dao.Admins, error) {
 	adminsModel.Mobile = admins.Mobile
 	adminsModel.RoleId = admins.RoleId
 	adminsModel.RealName = admins.RealName
+	adminsModel.Email = admins.Email
 
 	err := model.DB.Self.Table(adminsModel.TableName()).Save(&adminsModel)
 
@@ -94,4 +95,9 @@ func (admins *Admins) EditAdmin(id int) (dao.Admins, error) {
 	}
 
 	return adminsModel, nil
+}
+
+func (admins Admins) DelAdmin(id int) error {
+	err := model.DB.Self.Table(dao.Admins{}.TableName()).Where("id=?", id).Delete(dao.Admins{})
+	return err.Error
 }

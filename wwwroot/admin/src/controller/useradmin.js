@@ -80,7 +80,7 @@ layui.define(['table', 'form','common'], function(exports){
   //管理员管理
   table.render({
     elem: '#LAY-user-back-manage'
-    ,url: setter.localUrl + '/admin/admins/list' //模拟接口
+    ,url: setter.localUrl + '/admin/admins/list'
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 80, title: 'ID', sort: true}
@@ -99,24 +99,37 @@ layui.define(['table', 'form','common'], function(exports){
   //监听工具条
   table.on('tool(LAY-user-back-manage)', function(obj){
     var data = obj.data;
-    if(obj.event === 'del'){
-      layer.prompt({
-        formType: 1
-        ,title: '敏感操作，请验证口令'
-      }, function(value, index){
-        layer.close(index);
-        layer.confirm('确定删除此管理员？', function(index){
-          console.log(obj)
-          obj.del();
+    if (obj.event === 'del') {
+      layer.confirm('确定删除此管理员？', function (index) {
+        console.log(data.id);
+          admin.req({
+            url: setter.localUrl + "/admin/admins/del-admin/" + data.id,
+            method:"GET",
+            dataType:"json",
+            done:function(res){
+              if (res.code == 0) {
+                  layer.msg("已删除管理员",{
+                    icon:1,
+                    time:2000
+                  }, function () {
+                      console.log(obj);
+                      obj.del();
+                    // layui.table.reload('LAY-user-back-manage'); //重载表格
+                  })
+              } else {
+                layer.msg(res.msg,{icon:2});
+              }
+            }
+          });
           layer.close(index);
         });
-      });
     }else if(obj.event === 'edit'){
       admin.popup({
         title: '编辑管理员'
         ,area: ['420px', '450px']
         ,id: 'LAY-popup-user-add'
-        ,success: function(layero, index){
+        , success: function (layero, index) {
+          console.log(data)
           view(this.id).render('user/administrators/adminform', data).done(function(){
             form.render(null, 'layuiadmin-form-admin');
 
